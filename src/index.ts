@@ -1,15 +1,14 @@
-import dotenv from 'dotenv';
-import { Client, Events, GatewayIntentBits } from 'discord.js';
-import ready from './listeners/ready';
+import { BotClient } from './botClient';
+import database from './database';
 
-dotenv.config();
+if (!process.env.BOT_TOKEN) throw new Error('BOT_TOKEN is not defined');
+if (!process.env.GUILD_ID) throw new Error('GUILD_ID is not defined');
+if (!process.env.ENVIRONMENT) throw new Error('ENVIRONMENT is not defined');
+if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI is not defined');
 
-const client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-	],
-});
+database.connect()
 
-ready(client);
 
-client.login(process.env.BOT_TOKEN);
+const client = new BotClient();
+
+client.start();
