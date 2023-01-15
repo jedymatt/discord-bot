@@ -19,7 +19,7 @@ export class BotClient extends Client {
     start() {
         this.registerCommands();
         this.registerListeners();
-        this.login(process.env.BOT_TOKEN);
+        this.login(process.env.BOT_TOKEN as string);
     }
 
     async importFile(filePath: string) {
