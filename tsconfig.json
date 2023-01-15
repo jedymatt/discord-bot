@@ -1,21 +1,21 @@
 {
     "compilerOptions": {
         "esModuleInterop": true,
-        "rootDir": "src",
-        "outDir": "dist",
+        "rootDir": "./src",
+        "outDir": "./dist",
         "module": "CommonJS",
         "moduleResolution": "Node",
         "strict": true,
-        "target": "ESNext",
+        "target": "ES2016",
         "skipLibCheck": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
     },
     "exclude": [
-        "node_modules",
-        "dist"
+        "./node_modules",
+        "./dist/**/*"
     ],
     "include": [
-        "src/**/*.ts",
-        "environment.d.ts"
-    ]
+        "./src/**/*",
+        "./environment.d.ts",
+    ],
 }
