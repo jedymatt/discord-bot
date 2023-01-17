@@ -1,6 +1,8 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import mongoose, { MongooseError } from "mongoose";
-import User from "../models/User";
+import { MongooseError } from "mongoose";
+import LocationModel from "../models/Location";
+import UserModel from "../models/User";
+import { throwIfNotConnected } from "../services/databaseService";
 import { ICommand } from "../types/discord";
 
 export default <ICommand>{
@@ -23,23 +25,24 @@ export default <ICommand>{
 
 
 async function registerSubcommand(interaction: ChatInputCommandInteraction) {
-    if (mongoose.connection.readyState === 0) throw new Error("Database not connected.");
+    throwIfNotConnected();
 
     const discordId = interaction.user.id;
 
-    const user = await User.findOne({ discordId: discordId });
 
-    if (user) {
-        interaction.reply('User already exists');
+    const user = await UserModel.findOne({ discordId: discordId });
+
+    if (user !== null) {
+        interaction.reply('User already registered');
         return;
     }
 
-    const newUser = new User({
+    UserModel.create({
         discordId: discordId,
         username: interaction.user.username,
-    });
-
-    newUser.save();
+        level: 1,
+        location: (await LocationModel.findOne({ code: 'L1' }))?._id,
+    })
 
     interaction.reply('User created');
 }
