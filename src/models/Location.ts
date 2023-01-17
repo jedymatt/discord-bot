@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
-interface ILocation {
+export interface ILocation {
+    code: string;
     name: String;
     description?: String;
     level: Number;
@@ -8,6 +9,11 @@ interface ILocation {
 
 
 const locationSchema = new Schema<ILocation>({
+    code: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     name: {
         type: String,
         required: true,
