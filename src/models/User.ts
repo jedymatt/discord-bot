@@ -1,9 +1,11 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 
-interface IUser {
-    username?: String;
-    discordId: String;
+export interface IUser {
+    username?: string;
+    discordId: string;
+    level: number;
+    location: mongoose.Types.ObjectId;
 }
 
 const userSchema = new Schema<IUser>({
@@ -16,8 +18,17 @@ const userSchema = new Schema<IUser>({
         unique: true,
         required: true,
     },
+    level: {
+        type: Number,
+        required: true,
+    },
+    location: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location',
+        required: true,
+    },
 });
 
-const UserModel =  mongoose.model<IUser>('User', userSchema);
+const UserModel = mongoose.model<IUser>('User', userSchema);
 
 export default UserModel;
